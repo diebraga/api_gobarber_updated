@@ -25,7 +25,10 @@ appointmentRouter.post('/', (req, res) => {
       .json({ message: 'Hour already filled'});
   }
    
-  const appointment = appointmentsRepo.create(provider, formatedDate);
+  const appointment = appointmentsRepo.create({
+    provider,
+    date: formatedDate,
+  });
 
   return res.json(appointment);
 })

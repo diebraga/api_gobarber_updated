@@ -1,36 +1,32 @@
 import { Router } from 'express';
-import { startOfHour, parseISO } from 'date-fns';
+import { parseISO } from 'date-fns';
 
 import AppointmentRepo from '../repositories/AppointmentRepo';
+import CreateAppointmentService from '../service/CreateAppointmentService';
 
 const appointmentRouter = Router();
 const appointmentsRepo = new AppointmentRepo();
 
-appointmentRouter.get('/', (reqm, res) => {
+appointmentRouter.get('/', (req, res) => {
   const appointments = appointmentsRepo.allAppointments();
 
   return res.json(appointments);
 })
 
 appointmentRouter.post('/', (req, res) => {
-  const { provider, date } = req.body;
+  try {
+    const { provider, date } = req.body;
 
-  const formatedDate = startOfHour(parseISO(date));
-
-  const findAppointmentSameDate = appointmentsRepo.findByDate(formatedDate);
-
-  if (findAppointmentSameDate) {
-    return res
-      .status(400)
-      .json({ message: 'Hour already filled'});
+    const parsedDate = parseISO(date);
+  
+    const createAppointment = new CreateAppointmentService(appointmentsRepo);
+  
+    const appointment = createAppointment.execute({ date: parsedDate, provider });
+  
+    return res.json(appointment);  
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
   }
-   
-  const appointment = appointmentsRepo.create({
-    provider,
-    date: formatedDate,
-  });
-
-  return res.json(appointment);
 })
 
 export default appointmentRouter;  

@@ -1,30 +1,25 @@
 import { Router } from 'express';
-import { uuid } from 'uuidv4';
-import { startOfHour, parseISO, isEqual } from 'date-fns';
-import Appointment from '../models/Appointment';
+import { startOfHour, parseISO } from 'date-fns';
+
+import AppointmentRepo from '../repositories/AppointmentRepo';
 
 const appointmentRouter = Router();
-
-const appointments: Appointment[] = [];
+const appointmentsRepo = new AppointmentRepo();
 
 appointmentRouter.post('/', (req, res) => {
   const { provider, date } = req.body;
 
   const formatedDate = startOfHour(parseISO(date));
 
-  const findAppointmentSameDate = appointments.find(appointment =>
-    isEqual(formatedDate, appointment.date),
-    );
+  const findAppointmentSameDate = appointmentsRepo.findByDate(formatedDate);
 
   if (findAppointmentSameDate) {
     return res
       .status(400)
       .json({ message: 'Hour already filled'});
   }
-
-  const appointment = new Appointment(provider, formatedDate);
    
-  appointments.push(appointment);
+  const appointment = appointmentsRepo.create(provider, formatedDate);
 
   return res.json(appointment);
 })

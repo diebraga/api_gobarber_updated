@@ -14,9 +14,23 @@ export const Container = styled.div<ContainerProps>`
   border: 2px solid #232129;
   display: flex;
   align-items: center;
+
   & + div {
     margin-top: 8px;
   }
+
+  ${proops =>
+    proops.isFocused &&
+    css`
+      color: tomato;
+      border-color: tomato;
+    `}
+
+  ${proops =>
+    proops.isFilled &&
+    css`
+      color: tomato;
+    `}
 
   input {
     flex: 1;
@@ -27,6 +41,7 @@ export const Container = styled.div<ContainerProps>`
       color: #666360;
     }
   }
+
   svg {
     margin-right: 16px;
   }

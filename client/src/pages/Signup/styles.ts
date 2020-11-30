@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { shade } from 'polished';
 import BackgroundImg from '../../assets/background-2.png';
 
+
 export const Container = styled.div`
   height: 100vh;
 

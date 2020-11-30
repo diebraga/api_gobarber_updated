@@ -1,4 +1,4 @@
-import React from './pages/Signin/node_modules/react';
+import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import Routes from './routes';

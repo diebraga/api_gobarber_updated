@@ -14,6 +14,17 @@ export default createGlobalStyle`
     -webkit-font-smoothing: antialiased
   }
 
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px #232129 inset !important;
+  }
+
+  input:-webkit-autofill {
+    -webkit-text-fill-color: #fff !important;
+  }
+
   body, input, button {
     font: 16px "Roboto Slab", sans-serif;
   }
